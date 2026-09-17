@@ -18,8 +18,9 @@ function register({ app, destination = manifestPath(), executable = process.exec
   fs.mkdirSync(dataDirectory, { recursive: true, mode: 0o700 });
   if (!test) fs.cpSync(bundledExtensionDirectory(app), path.join(dataDirectory, 'extension'), { recursive: true });
   let launcher = executable;
-  if (!app?.isPackaged) {
-    const useElectron = !!process.versions.electron;
+  if (!app?.isPackaged || process.platform === 'win32') {
+    const useElectron = !!app?.isPackaged || !!process.versions.electron;
+    if (app?.isPackaged) host = path.join(path.dirname(executable), 'resources', 'native-host', 'native-host.cjs');
     if (process.platform === 'win32') {
       launcher = path.join(dataDirectory, 'native-host.cmd');
       if (/["%\r\n]/.test(executable + host + dataDirectory)) throw new Error('Unsupported installation path characters');
@@ -45,7 +46,12 @@ function registrationStatus(app) {
   try {
     const manifest = JSON.parse(fs.readFileSync(manifestPath(), 'utf8'));
     let registered = manifest.allowed_origins?.includes(`chrome-extension://${id}/`) && fs.existsSync(manifest.path);
-    if (app?.isPackaged) registered = registered && manifest.path === process.execPath;
+    if (app?.isPackaged) {
+      if (process.platform === 'win32') {
+        const launcher = path.join(directory, 'native-host.cmd');
+        registered = registered && manifest.path === launcher && fs.readFileSync(launcher, 'utf8').includes(`\"${process.execPath}\"`);
+      } else registered = registered && manifest.path === process.execPath;
+    }
     if (registered && process.platform === 'win32') registered = execFileSync('reg', ['query', `HKCU\\Software\\Google\\Chrome\\NativeMessagingHosts\\${name}`, '/ve'], { encoding: 'utf8', windowsHide: true }).includes(manifestPath());
     return { registered: !!registered, extensionId: id, extensionDirectory: extensionDirectory(app) };
   } catch { return { registered: false, extensionId: id, extensionDirectory: extensionDirectory(app) }; }

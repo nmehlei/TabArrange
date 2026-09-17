@@ -44,6 +44,15 @@
       {
         "from": "extension",
         "to": "extension"
+      },
+      {
+        "from": "src",
+        "to": "native-host",
+        "filter": [
+          "native-host.cjs",
+          "protocol.cjs",
+          "shared.cjs"
+        ]
       }
     ],
     "mac": {
@@ -60,8 +69,8 @@
       "target": [
         "nsis"
       ],
-      "signAndEditExecutable": false,
-      "icon": "build/icon.png"
+      "icon": "build/icon.png",
+      "signExecutable": false
     },
     "nsis": {
       "oneClick": false,

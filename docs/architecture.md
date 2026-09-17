@@ -37,10 +37,15 @@ local recovery. There is one extension identity installed in each connected prof
 5. The extension checks live Chrome state again, performs the action, emits progress
    for destructive operations, and publishes the resulting inventory.
 
-The packaged executable doubles as the native host. Its origin argument must match
+On macOS, the packaged executable doubles as the native host. Its origin argument must match
 `chrome-extension://lchoojgeiconnnhmekjagpojoneldeie/`. Development installations
 use a wrapper pointing at the installed local runtime; packaged installations do
-not require Node.js. Moving an app requires Repair bridge to update its host path.
+not require Node.js. Windows packaged installations use a generated `.cmd` launcher
+with `ELECTRON_RUN_AS_NODE=1`, running the packaged executable against the bundled
+`resources/native-host/native-host.cjs` files. This avoids Electron GUI-mode stdout
+limitations on Windows. Chrome’s manifest still restricts the extension origin and
+the host authenticates to the local named pipe. Moving an app requires Repair
+bridge to update its host path.
 
 ## Messages and identity
 
