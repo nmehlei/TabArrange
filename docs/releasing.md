@@ -88,8 +88,10 @@ explicit incrementing commit to publish another version.
 
 Branch protection/rulesets must permit the workflow to create `v*` tags and releases.
 Otherwise the job fails visibly; do not add a personal access token as a workaround
-without considering the repository settings. The personal repository is connected. A successful complete hosted matrix is
-required before claiming verification on all platforms.
+without considering the repository settings. The personal repository is connected. All three hosted platform jobs passed on
+2026-09-17 at commit `22ffabb` ([run 35190965258](https://github.com/nmehlei/TabArrange/actions/runs/35190965258)).
+The matrix covers installer builds and isolated packaged Chrome integration; it
+does not establish the real-machine installer UX listed below.
 
 ## Local verification
 
