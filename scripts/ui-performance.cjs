@@ -23,7 +23,7 @@ app.whenReady().then(async () => {
   });
   ipcMain.handle('settings', () => ({ keepDomains: [], protectActive: true, protectPinned: true, protectAudible: true, retentionDays: 30 }));
   window = new BrowserWindow({ show: false, width: 1280, height: 850, webPreferences: { backgroundThrottling: false, preload: path.resolve(__dirname, '../src/preload.cjs'), sandbox: true, contextIsolation: true } });
-  window.webContents.on('console-message', (_event, details) => console.log('Renderer:', details.message));
+  window.webContents.on('console-message', event => console.log('Renderer:', event.message));
   await window.loadFile(path.resolve(__dirname, '../src/index.html'));
   await waitFor(`!document.querySelector('#favicon-notice').hidden && document.querySelector('#favicon-notice').textContent.includes('Reload')`, 'extension reload guidance');
   if (faviconRequests !== 1) throw new Error('Failed favicon request was retried without backoff');
@@ -33,7 +33,7 @@ app.whenReady().then(async () => {
   window.webContents.send('profiles', [profile]);
   await waitFor(`!!document.querySelector('.tab-favicon') && document.querySelector('#favicon-notice').hidden`, 'favicons after reconnect');
   const metrics = await window.webContents.executeJavaScript(`(async () => {
-    const assert = (value, label) => { if (!value) throw new Error(label); };
+    const assert = (value, label) => { if (!value) { console.error(label); throw new Error(label); } };
     assert(document.querySelector('.window-icon').parentElement.textContent.startsWith('Window 1'), 'Internal window ID leaked into sidebar');
     assert(!document.querySelector('.location').textContent.includes('968302518'), 'Internal window ID leaked into row');
     assert(document.querySelector('#result-count').textContent === '5000 of 5000 tabs', 'Large fixture missing');
