@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-only
+// Copyright (C) 2026 nmehlei
 import { key, flatten, duplicateKeys, isEmpty, filterTabs, closeReason, demoProfiles, defaultSettings, windowCounts, cleanupPlan } from './model.mjs';
 const $ = selector => document.querySelector(selector), bridge = window.chromeBridge;
 let live = [], demo = false, samples = [], selected = new Set(), filter = { type: 'all' }, search = '', anchor, busy = false, organizeMode = 'group', pendingClose = [], pendingOrganization, contextTab, settings = { ...defaultSettings }, demoHistory = [], proposed;

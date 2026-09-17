@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-only
+// Copyright (C) 2026 nmehlei
 const MAX = 8 * 1024 * 1024;
 function encode(value) {
   const body = Buffer.from(JSON.stringify(value));

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-only
+// Copyright (C) 2026 nmehlei
 const { app, BrowserWindow, nativeTheme } = require('electron');
 const path = require('node:path');
 const fs = require('node:fs');

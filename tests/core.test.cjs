@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-only
+// Copyright (C) 2026 nmehlei
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { encode, decoder } = require('../src/protocol.cjs');

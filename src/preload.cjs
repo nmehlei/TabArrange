@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-only
+// Copyright (C) 2026 nmehlei
 const { contextBridge, ipcRenderer } = require('electron');
 contextBridge.exposeInMainWorld('chromeBridge', {
   profiles: () => ipcRenderer.invoke('profiles'),

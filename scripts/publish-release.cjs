@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-only
+// Copyright (C) 2026 nmehlei
 // Invoked only by the main-branch release job through actions/github-script.
 const fs = require('node:fs');
 const path = require('node:path');
@@ -29,7 +31,7 @@ async function publishRelease({ github, context, core, version = process.env.REL
   if (!release) {
     const notes = (await github.rest.repos.generateReleaseNotes({ owner, repo, tag_name: tag, target_commitish: sha })).data.body;
     release = (await github.rest.repos.createRelease({ owner, repo, tag_name: tag, target_commitish: sha, name: `TabArrange ${version}`, draft: true, prerelease: false,
-      body: `Desktop installers for macOS Apple Silicon, macOS Intel, and Windows x64.\n\nThe companion Chrome extension is bundled in the app and also attached as a ZIP. Use the app's Connect Chrome setup to install it. macOS builds are ad-hoc signed without notarization; Windows builds are unsigned.\n\n${notes}` })).data;
+      body: `Desktop installers for macOS Apple Silicon, macOS Intel, and Windows x64.\n\nThe companion Chrome extension is bundled in the app and also attached as a ZIP. Use the app's Connect Chrome setup to install it. macOS builds are ad-hoc signed without notarization; Windows builds are unsigned.\n\nLicensed under GNU GPLv3 only. [Corresponding source for this release](https://github.com/${owner}/${repo}/archive/refs/tags/${tag}.zip), including build instructions and extension source.\n\n${notes}` })).data;
   }
   const assets = await github.paginate(github.rest.repos.listReleaseAssets, { owner, repo, release_id: release.id, per_page: 100 });
   for (const name of [...expected, 'SHA256SUMS.txt']) {

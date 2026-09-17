@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-only
+// Copyright (C) 2026 nmehlei
 function validSnapshot(m) {
   return m && typeof m.profile?.id === 'string' && m.profile.id.length <= 100 && typeof m.profile.name === 'string' && m.profile.name.length <= 100 && typeof m.sessionId === 'string' && m.sessionId.length <= 100 && Array.isArray(m.windows) && m.windows.length <= 10000 && m.windows.every(w => Number.isInteger(w.id)) && Array.isArray(m.groups) && m.groups.length <= 50000 && m.groups.every(g => Number.isInteger(g.id) && Number.isInteger(g.windowId) && typeof g.title === 'string') && Array.isArray(m.tabs) && m.tabs.length <= 50000 && m.tabs.every(t => Number.isInteger(t.id) && Number.isInteger(t.windowId) && typeof t.url === 'string' && typeof t.title === 'string' && t.url.length <= 200000 && t.title.length <= 20000) && new Set(m.tabs.map(t => t.id)).size === m.tabs.length;
 }

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-only
+// Copyright (C) 2026 nmehlei
 // Chrome launches this process. stdout is reserved for native messaging frames.
 const fs = require('node:fs');
 const net = require('node:net');

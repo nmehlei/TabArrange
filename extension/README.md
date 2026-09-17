@@ -14,3 +14,6 @@ Never regenerate the manifest public key casually: it fixes the extension ID and
 native-host allowed origin. No private signing key is stored here. See
 [architecture](../docs/architecture.md), [product spec](../docs/product-spec.md),
 and [release workflow](../docs/releasing.md) in the source repository.
+
+Licensed under GNU GPLv3 only; see [LICENSE](LICENSE). Copyright (C) 2026 nmehlei.
+Corresponding source and build instructions: https://github.com/nmehlei/TabArrange.

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-only
+// Copyright (C) 2026 nmehlei
 // Prepare Chrome's supported unpacked-extension installation flow.
 // Does not edit Chrome profiles or replace an existing native-host registration.
 const fs = require('node:fs');

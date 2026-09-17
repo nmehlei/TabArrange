@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-only
+// Copyright (C) 2026 nmehlei
 const { app, BrowserWindow, ipcMain, session, shell, clipboard } = require('electron');
 const fs = require('node:fs');
 const path = require('node:path');

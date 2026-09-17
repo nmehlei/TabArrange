@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-only
+// Copyright (C) 2026 nmehlei
 (() => {
   const system = matchMedia('(prefers-color-scheme: dark)');
   let preference = 'system';

@@ -119,7 +119,9 @@ Bug reports, usability feedback, documentation improvements, and focused pull re
 
 ## License
 
-A license is pending the maintainer's selection. Until a license is added, this repository does not grant open-source reuse rights.
+Copyright © 2026 nmehlei. The TabArrange application and companion extension are licensed under the **GNU General Public License v3.0 only** ([GPL-3.0-only](LICENSE)).
+
+You may use, modify, and redistribute TabArrange, including commercially. If you distribute a modified version, provide its corresponding source under GPLv3. The software comes without warranty. Third-party dependencies retain their own licenses.
 
 ---
 

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-only
+// Copyright (C) 2026 nmehlei
 const { app, BrowserWindow } = require('electron');
 const path = require('node:path'), fs = require('node:fs');
 app.setPath('userData', path.join(require('node:os').tmpdir(), 'chr-icons'));

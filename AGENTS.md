@@ -13,7 +13,8 @@ the personal GitHub account explicitly identified by the user. Set commit identi
 locally in this repository; never change global Git identity or reuse a company
 remote. Never request credentials in chat. The authorized personal account is `nmehlei` and the remote is
 `https://github.com/nmehlei/TabArrange.git`. Do not substitute a work account.
-The open-source license remains undecided until the user selects it.
+The user selected GPLv3: use `GPL-3.0-only` for the app and extension. Preserve
+license/copyright notices and ship LICENSE in both desktop and extension packages.
 
 ## Constraints
 

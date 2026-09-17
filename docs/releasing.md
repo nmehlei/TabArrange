@@ -11,8 +11,10 @@ public; it is not a secret signing key and must remain stable.
 The user authorized personal account `nmehlei` and remote
 `https://github.com/nmehlei/TabArrange.git`. Use repository-local author settings
 and interactive authentication; never change global Git identity or use a company
-account. Preserve the destination repository's visibility. License selection is
-separate from authorization to push source.
+account. Preserve the destination repository's visibility. The app and extension
+are licensed under `GPL-3.0-only`; both distributions include the full license.
+Release notes link to the corresponding source archive at the exact release tag.
+Retain third-party runtime license notices supplied by Electron/electron-builder.
 
 ## GitVersion 5.x Mainline
 
@@ -86,8 +88,8 @@ explicit incrementing commit to publish another version.
 
 Branch protection/rulesets must permit the workflow to create `v*` tags and releases.
 Otherwise the job fails visibly; do not add a personal access token as a workaround
-without considering the repository settings. No workflow is yet proven on GitHub
-until the personal repository exists and its first complete run succeeds.
+without considering the repository settings. The personal repository is connected. A successful complete hosted matrix is
+required before claiming verification on all platforms.
 
 ## Local verification
 
@@ -107,8 +109,6 @@ that generated bump. `npm run dist` builds locally but never publishes by itself
 
 ## Remaining decisions and actual-machine checks
 
-- The open-source license is pending maintainer selection. Public source without
-  a license is not an open-source license grant.
 - CI tests are not installer UX tests: verify macOS downloaded/quarantined first
   launch, Windows install/uninstall, and extension setup on real machines.
 - No paid Apple account will be used. macOS is ad-hoc signed and not notarized;

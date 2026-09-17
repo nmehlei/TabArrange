@@ -8,6 +8,6 @@ The extension key is intentionally a public key that fixes its development ID; d
 
 Windows and Intel macOS changes require those CI jobs to pass. Keep the no-paid-Apple-account constraint and avoid adding cloud services or telemetry.
 
-An open-source license has not been selected yet. Contribution and distribution terms must be settled before public release.
+The app and extension are licensed under [GPLv3 only](LICENSE). Contributions are accepted under the same terms; include attribution and compatible license notices for any third-party code. Do not include code you lack permission to contribute.
 
 Start with [AGENTS.md](AGENTS.md), [architecture](docs/architecture.md), and [product spec](docs/product-spec.md). Releases use pinned GitVersion 5.12 Mainline; follow [the release guide](docs/releasing.md) rather than manually bumping manifests.

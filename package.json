@@ -37,7 +37,8 @@
     "asar": true,
     "files": [
       "src/**/*",
-      "package.json"
+      "package.json",
+      "LICENSE"
     ],
     "extraResources": [
       {
@@ -73,5 +74,11 @@
       "output": "dist"
     },
     "artifactName": "${productName}-${version}-${os}-${arch}.${ext}"
+  },
+  "license": "GPL-3.0-only",
+  "author": "nmehlei",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nmehlei/TabArrange.git"
   }
 }

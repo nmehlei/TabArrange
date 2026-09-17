@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-only
+// Copyright (C) 2026 nmehlei
 // Real Chrome integration using ONLY isolated Chrome-for-Testing profiles and synthetic pages.
 const { app } = require('electron');
 const fs = require('node:fs'), path = require('node:path'), os = require('node:os'), http = require('node:http');

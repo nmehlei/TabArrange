@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-only
+// Copyright (C) 2026 nmehlei
 let port, connecting = false, snapshotTimer, commandQueue = Promise.resolve(), identityPromise, sessionPromise;
 function identity() {
   return identityPromise ||= (async () => {

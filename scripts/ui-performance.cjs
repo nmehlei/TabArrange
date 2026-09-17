@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-only
+// Copyright (C) 2026 nmehlei
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('node:path');
 app.setPath('userData', require('node:fs').mkdtempSync(path.join(require('node:os').tmpdir(), 'chr-performance-')));
@@ -32,6 +34,8 @@ app.whenReady().then(async () => {
   await waitFor(`document.querySelectorAll('.tab-row').length === 0`, 'profile disconnect');
   window.webContents.send('profiles', [profile]);
   await waitFor(`!!document.querySelector('.tab-favicon') && document.querySelector('#favicon-notice').hidden`, 'favicons after reconnect');
+  window.show(); window.focus();
+  await waitFor('document.hasFocus()', 'foreground test window');
   const metrics = await window.webContents.executeJavaScript(`(async () => {
     const assert = (value, label) => { if (!value) { console.error(label); throw new Error(label); } };
     assert(document.querySelector('.window-icon').parentElement.textContent.startsWith('Window 1'), 'Internal window ID leaked into sidebar');
@@ -51,13 +55,18 @@ app.whenReady().then(async () => {
     const list = document.querySelector('#tab-list'); list.scrollTop = 200000;
     await new Promise(resolve => setTimeout(resolve, 100));
     assert(document.querySelectorAll('.tab-row').length < 50, 'Scrolled list is not virtualized');
-    const row = document.querySelector('.tab-row'); row.querySelector('input').click(); row.focus();
+    const bounds = list.getBoundingClientRect();
+    const row = [...document.querySelectorAll('.tab-row')].find(row => row.getBoundingClientRect().top >= bounds.top && row.getBoundingClientRect().bottom <= bounds.bottom);
+    assert(row, 'No visible row available for keyboard focus');
+    row.querySelector('input').click(); row.focus({ preventScroll: true });
+    assert(document.activeElement === row, 'Could not establish keyboard focus before snapshot');
     window.performanceFocusKey = row.dataset.key;
     return { totalTabs: 5000, renderedRows: document.querySelectorAll('.tab-row').length, searchMilliseconds: Math.round(elapsed) };
   })()`);
   profile.tabs[10].title = 'Updated background title';
+  profile.name = 'Updated workspace';
   window.webContents.send('profiles', [profile]);
-  await new Promise(resolve => setTimeout(resolve, 50));
+  await waitFor(`document.querySelector('.location').textContent.includes('Updated workspace')`, 'updated profile snapshot');
   await window.webContents.executeJavaScript(`if (document.activeElement?.dataset.key !== window.performanceFocusKey) throw new Error('Live update lost keyboard focus'); if (!document.querySelector('#selection-count').textContent.startsWith('1 selected')) throw new Error('Live update lost selection');`);
   console.log('Large workspace UI passed:', JSON.stringify(metrics), 'Live update retained selection and keyboard focus.');
   app.quit();

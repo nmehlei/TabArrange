@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-only
+// Copyright (C) 2026 nmehlei
 const fs = require('node:fs'), path = require('node:path');
 const { directory } = require('../src/shared.cjs');
 const destination = path.join(directory, 'extension');

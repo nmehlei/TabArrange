@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-only
+// Copyright (C) 2026 nmehlei
 export const key = tab => `${tab.profileId}:${tab.sessionId ? tab.sessionId + ":" : ""}${tab.id}`;
 export function flatten(profiles) {
   return profiles.flatMap(profile => profile.tabs.map(tab => ({ ...tab, profileId: profile.id, profileName: profile.name, sessionId: profile.sessionId })));

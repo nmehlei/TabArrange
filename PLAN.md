@@ -27,7 +27,7 @@ The absence of an Apple developer subscription applies equally to both framework
 
 - Execute the CI matrix on Windows and Intel macOS; local ARM64 tests do not establish those results.
 - Verify downloaded/quarantined macOS first launch, Windows installer/uninstaller, and managed-browser restrictions on actual machines.
-- Select an open-source license. Personal repository: `nmehlei/TabArrange`. Main-branch CI is configured to publish GitHub Releases automatically once the personal repository is set up. It has not run on GitHub yet.
+- Personal repository `nmehlei/TabArrange` is published under GPL-3.0-only. Hosted CI is running; resolve remaining platform failures before the first automatic release.
 - Choose Chrome extension distribution: unpacked installation is working; Web Store publication would improve onboarding and needs separate registration/review.
 - Accessibility testing with screen readers and additional high-volume recovery/large-URL fixtures.
 

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-only
+// Copyright (C) 2026 nmehlei
 chrome.storage.local.get('profile').then(({ profile }) => { document.querySelector('#name').value = profile?.name || ''; });
 document.querySelector('form').addEventListener('submit', async event => {
   event.preventDefault();
