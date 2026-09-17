@@ -20,7 +20,7 @@ function register({ app, destination = manifestPath(), executable = process.exec
   let launcher = executable;
   if (!app?.isPackaged || process.platform === 'win32') {
     const useElectron = !!app?.isPackaged || !!process.versions.electron;
-    if (app?.isPackaged) host = path.join(path.dirname(executable), 'resources', 'native-host', 'native-host.cjs');
+    if (app?.isPackaged) host = path.join(path.dirname(executable), 'resources', 'app.asar.unpacked', 'src', 'native-host.cjs');
     if (process.platform === 'win32') {
       launcher = path.join(dataDirectory, 'native-host.cmd');
       if (/["%\r\n]/.test(executable + host + dataDirectory)) throw new Error('Unsupported installation path characters');

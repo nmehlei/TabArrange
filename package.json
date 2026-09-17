@@ -44,15 +44,6 @@
       {
         "from": "extension",
         "to": "extension"
-      },
-      {
-        "from": "src",
-        "to": "native-host",
-        "filter": [
-          "native-host.cjs",
-          "protocol.cjs",
-          "shared.cjs"
-        ]
       }
     ],
     "mac": {
@@ -82,7 +73,12 @@
     "directories": {
       "output": "dist"
     },
-    "artifactName": "${productName}-${version}-${os}-${arch}.${ext}"
+    "artifactName": "${productName}-${version}-${os}-${arch}.${ext}",
+    "asarUnpack": [
+      "src/native-host.cjs",
+      "src/protocol.cjs",
+      "src/shared.cjs"
+    ]
   },
   "license": "GPL-3.0-only",
   "author": "nmehlei",

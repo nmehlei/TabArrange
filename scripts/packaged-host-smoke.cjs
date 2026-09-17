@@ -24,7 +24,7 @@ const server = net.createServer(socket => {
 });
 server.listen(endpoint, () => {
   const windows = process.platform === 'win32';
-  const args = windows ? [path.join(path.dirname(executable), 'resources', 'native-host', 'native-host.cjs')] : [`chrome-extension://${id}/`];
+  const args = windows ? [path.join(path.dirname(executable), 'resources', 'app.asar.unpacked', 'src', 'native-host.cjs')] : [`chrome-extension://${id}/`];
   child = spawn(executable, args, { stdio: ['pipe', 'pipe', 'pipe'], env: windows ? { ...process.env, ELECTRON_RUN_AS_NODE: '1' } : process.env });
   child.on('exit', (code, signal) => { if (completed) return; console.error(`Packaged native host exited early: ${code ?? signal}`); clearTimeout(timeout); server.close(); process.exit(1); });
   child.on('error', error => { console.error(error); process.exit(1); });

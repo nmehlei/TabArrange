@@ -42,8 +42,9 @@ On macOS, the packaged executable doubles as the native host. Its origin argumen
 use a wrapper pointing at the installed local runtime; packaged installations do
 not require Node.js. Windows packaged installations use a generated `.cmd` launcher
 with `ELECTRON_RUN_AS_NODE=1`, running the packaged executable against the bundled
-`resources/native-host/native-host.cjs` files. This avoids Electron GUI-mode stdout
-limitations on Windows. Chrome’s manifest still restricts the extension origin and
+`resources/app.asar.unpacked/src/native-host.cjs` files. This avoids Electron GUI-mode stdout
+limitations on Windows. Use `asarUnpack` for these shared files; copying them
+via `extraResources` would exclude them from the desktop archive. Chrome’s manifest still restricts the extension origin and
 the host authenticates to the local named pipe. Moving an app requires Repair
 bridge to update its host path.
 
