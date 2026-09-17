@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "TabArrange Bridge",
+  "version": "0.3.0",
+  "description": "Connect your Chrome tabs to the local TabArrange desktop app.",
+  "permissions": [
+    "tabs",
+    "tabGroups",
+    "storage",
+    "nativeMessaging",
+    "alarms",
+    "favicon"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "Connect to TabArrange"
+  },
+  "options_page": "options.html",
+  "incognito": "not_allowed",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAkuGnVHVJlebFgqDnGvwUT5cqqfRqbUmqmF2FoLSQia1QP4J6mjlbWyaCqQ1J//yDESGkCheTArTNmcaKLwbx7WjQQzFkExJmuklclFM7zQG8djl6uC6j3D30SPbxi/MG7K4Wk2ezGPCmVni/ZN3Q+LfHMG5QkEZ5jMrQk4XlECQrY0GsRk9ClJlPesWY20BoU4D6quEdpeNEyVUX3miPj82NdMyiMhpyXCNWEyn4KcOI2PIwRdIkedHRA9ZzGJ0Mghl7yxzSrwoFDOh7IdfkCkqB8I5cj0lzE1e0xh9cDbQrAdahAH8nA0NhkoVC46457xjLrnXQsOKT2gEzwCXPLwIDAQAB",
+  "minimum_chrome_version": "121"
+}

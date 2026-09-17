@@ -1,0 +1,38 @@
+# Dependencies and generated builds
+node_modules/
+dist/
+release/
+coverage/
+.nyc_output/
+*.tsbuildinfo
+
+# Local credentials and environment
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Browser/runtime data (never commit browsing history or bridge tokens)
+.chr-organizer/
+.puppeteer/
+workspace.json
+recovery.jsonl
+
+# Test and versioning output
+*.log
+*.trx
+TestResults/
+gitversion.json
+
+# OS and editor-local files
+.DS_Store
+Thumbs.db
+Desktop.ini
+.idea/
+.vscode/
+*.swp
+*.swo
+*~

@@ -1,0 +1,120 @@
+name: Build, test, and release
+on:
+  push:
+    branches: ['**']
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: tabarrange-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+jobs:
+  version:
+    runs-on: ubuntu-22.04
+    outputs:
+      semver: ${{ steps.version.outputs.semver }}
+    env:
+      DOTNET_ROLL_FORWARD: Major
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - run: dotnet tool restore
+      - run: node scripts/version-smoke.cjs
+      - name: Calculate version with GitVersion 5.12 Mainline
+        id: version
+        run: node scripts/version.cjs
+  desktop:
+    needs: version
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-15
+            arch: arm64
+          - os: macos-15-intel
+            arch: x64
+          - os: windows-2022
+            arch: x64
+    runs-on: ${{ matrix.os }}
+    env:
+      RELEASE_VERSION: ${{ needs.version.outputs.semver }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Apply calculated version to app, lockfile, and extension
+        run: node scripts/version.cjs --apply "$env:RELEASE_VERSION"
+        shell: pwsh
+      - run: npm run check
+      - run: npm test
+      - run: npm run test:ui
+      - run: npm run test:performance
+      - run: npm run test:bridge
+      - run: npm run browser:install
+      - run: npm run test:chrome
+      - run: npm run dist -- --${{ matrix.arch }}
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+      - run: npm run test:packaged-host
+      - run: npm run test:chrome:packaged
+      - uses: actions/upload-artifact@v4
+        with:
+          name: desktop-${{ matrix.os }}-${{ matrix.arch }}
+          path: |
+            dist/*.dmg
+            dist/*.zip
+            dist/*.exe
+          if-no-files-found: error
+          retention-days: 14
+  extension:
+    needs: version
+    runs-on: ubuntu-22.04
+    env:
+      RELEASE_VERSION: ${{ needs.version.outputs.semver }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: node scripts/version.cjs --apply "$RELEASE_VERSION"
+      - run: mkdir -p release
+      - name: Zip the loadable extension (manifest at ZIP root)
+        working-directory: extension
+        run: zip -r "../release/TabArrange-Bridge-${RELEASE_VERSION}.zip" .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: extension
+          path: release/*.zip
+          if-no-files-found: error
+          retention-days: 14
+  release:
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    needs: [version, desktop, extension]
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+    env:
+      RELEASE_VERSION: ${{ needs.version.outputs.semver }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          path: release
+          merge-multiple: true
+      - name: Publish complete release (safe to retry)
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const publish = require('./scripts/publish-release.cjs');
+            await publish({ github, context, core });
