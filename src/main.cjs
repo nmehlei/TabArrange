@@ -122,6 +122,7 @@ async function start() {
   handle('history', () => store.history());
   handle('recover', recover);
   handle('clear-history', () => { if (profileLocks.size) throw new Error('Wait for current operations to finish'); store.clear(); });
+  handle('about', () => ({ version: app.getVersion(), electron: process.versions.electron, chrome: process.versions.chrome }));
   handle('setup', async action => {
     if (action === 'register') installation.register({ app });
     else if (action === 'unregister') { if (profileLocks.size) throw new Error('Wait for current operations to finish'); installation.unregister(); for (const socket of sockets) socket.destroy(); }

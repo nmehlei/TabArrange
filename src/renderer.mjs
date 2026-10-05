@@ -473,6 +473,10 @@ document.addEventListener('keydown', event => {
   else if (event.key === 'ArrowDown' || event.key === 'ArrowUp') { event.preventDefault(); (document.activeElement.id === 'window-focus' ? $('#window-close') : $('#window-focus')).focus(); }
 });
 $('#demo').onclick = toggleDemo; $('#empty-demo').onclick = toggleDemo;
+$('#about').onclick = async () => {
+  $('#about-dialog').showModal();
+  try { const info = await bridge.about(); $('#about-version').textContent = info.version; $('#about-runtime').textContent = `Electron ${info.electron} · Chromium ${info.chrome}`; } catch { $('#about-version').textContent = 'unknown'; }
+};
 $('#setup').onclick = () => { $('#setup-dialog').showModal(); setup(); };
 $('#install-bridge').onclick = () => setup('register'); $('#remove-bridge').onclick = () => setup('unregister'); $('#extension-folder').onclick = () => setup('folder'); $('#extension-path').onclick = async () => { await setup('copy-path'); $('#setup-status').textContent = 'Extension folder path copied.'; };
 $('#search').oninput = event => { search = event.target.value; $('#tab-list').scrollTop = 0; render(); };

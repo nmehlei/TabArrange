@@ -8,6 +8,7 @@ contextBridge.exposeInMainWorld('chromeBridge', {
   history: () => ipcRenderer.invoke('history'),
   recover: (id, uncertain) => ipcRenderer.invoke('recover', id, uncertain),
   clearHistory: () => ipcRenderer.invoke('clear-history'),
+  about: () => ipcRenderer.invoke('about'),
   setup: action => ipcRenderer.invoke('setup', action),
   subscribe: callback => { const listener = (_event, profiles) => callback(profiles); ipcRenderer.on('profiles', listener); return () => ipcRenderer.removeListener('profiles', listener); }
 });
