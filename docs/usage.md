@@ -44,7 +44,7 @@ After enabling the bridge, `npm run chrome:setup` opens Chrome’s Extensions pa
 - Tab and window close dialogs have separate **Always ask** preferences. Uncheck when confirming to skip the next prompt; reenable in **Preferences**.
 - Duplicates are clustered by exact URL within each profile; searching retains every copy in a matching cluster.
 - Clicking a tab row toggles only that tab; other selected tabs remain selected. Window labels use short numbers per profile, retained for the current app/browser session.
-- Drag the sidebar divider to resize it; its width is remembered. Preferences, connection setup, recovery, refresh, and demo are in the sidebar **⋯** menu. Search sits at the top right, and compact rows keep more tabs visible.
+- Drag the sidebar divider to resize it; its width is remembered. Preferences, connection setup, recovery, refresh, demo, and **About** (shows the installed version) are in the sidebar **⋯** menu. Search sits at the top right, and compact rows keep more tabs visible.
 - After updating the unpacked extension, click **Reload** on TabArrange Bridge at `chrome://extensions` to activate favicon permission, then choose **⋯ → Refresh tabs** if needed. Failed icon requests retry after reconnection.
 - Tab favicons come from Chrome’s local favicon cache and load only for visible rows. Group badges/sidebar markers follow Chrome’s group colors; windows use the Chrome icon.
 - Select with checkboxes, Shift-click for ranges, or Ctrl/Cmd-click rows. The selection bar explicitly counts selected tabs hidden by the current filter.
