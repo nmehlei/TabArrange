@@ -18,19 +18,18 @@ function register({ app, destination = manifestPath(), executable = process.exec
   fs.mkdirSync(dataDirectory, { recursive: true, mode: 0o700 });
   if (!test) fs.cpSync(bundledExtensionDirectory(app), path.join(dataDirectory, 'extension'), { recursive: true });
   let launcher = executable;
-  if (!app?.isPackaged || process.platform === 'win32') {
-    const useElectron = !!app?.isPackaged || !!process.versions.electron;
-    if (app?.isPackaged) host = path.join(path.dirname(executable), 'resources', 'app.asar.unpacked', 'src', 'native-host.cjs');
-    if (process.platform === 'win32') {
-      launcher = path.join(dataDirectory, 'native-host.cmd');
-      if (/["%\r\n]/.test(executable + host + dataDirectory)) throw new Error('Unsupported installation path characters');
-      fs.writeFileSync(launcher, '@echo off\r\nsetlocal DisableDelayedExpansion\r\n' + (useElectron ? 'set ELECTRON_RUN_AS_NODE=1\r\n' : '') + (test ? `set "CHR_ORGANIZER_DATA_DIR=${dataDirectory}"\r\n` : '') + `"${executable}" "${host}"\r\n`);
-    } else {
-      launcher = path.join(dataDirectory, 'native-host');
-      const q = s => "'" + s.replaceAll("'", "'\\''") + "'";
-      fs.writeFileSync(launcher, '#!/bin/sh\n' + (test ? `export CHR_ORGANIZER_DATA_DIR=${q(dataDirectory)}\n` : '') + (useElectron ? 'export ELECTRON_RUN_AS_NODE=1\n' : '') + `exec ${q(executable)} ${q(host)}\n`, { mode: 0o700 });
-      fs.chmodSync(launcher, 0o700);
-    }
+  const useElectron = !!app?.isPackaged || !!process.versions.electron;
+  // Run the host as plain Node: launching the Electron app binary directly makes macOS show (and bounce) a Dock icon.
+  if (app?.isPackaged) host = path.join(path.dirname(executable), process.platform === 'darwin' ? '../Resources' : 'resources', 'app.asar.unpacked', 'src', 'native-host.cjs');
+  if (process.platform === 'win32') {
+    launcher = path.join(dataDirectory, 'native-host.cmd');
+    if (/["%\r\n]/.test(executable + host + dataDirectory)) throw new Error('Unsupported installation path characters');
+    fs.writeFileSync(launcher, '@echo off\r\nsetlocal DisableDelayedExpansion\r\n' + (useElectron ? 'set ELECTRON_RUN_AS_NODE=1\r\n' : '') + (test ? `set "CHR_ORGANIZER_DATA_DIR=${dataDirectory}"\r\n` : '') + `"${executable}" "${host}"\r\n`);
+  } else {
+    launcher = path.join(dataDirectory, 'native-host');
+    const q = s => "'" + s.replaceAll("'", "'\\''") + "'";
+    fs.writeFileSync(launcher, '#!/bin/sh\n' + (test ? `export CHR_ORGANIZER_DATA_DIR=${q(dataDirectory)}\n` : '') + (useElectron ? 'export ELECTRON_RUN_AS_NODE=1\n' : '') + `exec ${q(executable)} ${q(host)}\n`, { mode: 0o700 });
+    fs.chmodSync(launcher, 0o700);
   }
   const manifest = { name, description: 'TabArrange local bridge', path: launcher, type: 'stdio', allowed_origins: [`chrome-extension://${id}/`] };
   fs.mkdirSync(path.dirname(destination), { recursive: true });

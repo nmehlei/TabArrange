@@ -2,6 +2,7 @@
 // Copyright (C) 2026 nmehlei
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
+const fs = require('node:fs'), os = require('node:os'), path = require('node:path');
 const { encode, decoder } = require('../src/protocol.cjs');
 test('native messaging handles fragmented and coalesced UTF-8 frames', () => {
   const output = [], read = decoder(value => output.push(value));
@@ -57,4 +58,16 @@ test('duplicates cluster interleaved copies and search retains differently title
   ];
   assert.deepEqual(filterTabs(tabs, '', { type: 'duplicates' }).map(t => t.id), [1, 3, 2, 4]);
   assert.deepEqual(filterTabs(tabs, 'Unique search', { type: 'duplicates' }).map(t => t.id), [1, 3]);
+});
+
+test('packaged bridge registration uses a Node-mode launcher so macOS shows no Dock icon', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'chr-reg-'));
+  const executable = path.join(dir, 'TabArrange');
+  const { register } = require('../src/installation.cjs');
+  const destination = path.join(dir, 'manifest.json');
+  register({ app: { isPackaged: true }, destination, executable, dataDirectory: dir, test: true });
+  const launcher = JSON.parse(fs.readFileSync(destination, 'utf8')).path;
+  assert.notEqual(launcher, executable);
+  assert.match(fs.readFileSync(launcher, 'utf8'), /ELECTRON_RUN_AS_NODE=1/);
+  assert.match(fs.readFileSync(launcher, 'utf8'), /app\.asar\.unpacked/);
 });
