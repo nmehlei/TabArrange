@@ -46,10 +46,8 @@ function registrationStatus(app) {
     const manifest = JSON.parse(fs.readFileSync(manifestPath(), 'utf8'));
     let registered = manifest.allowed_origins?.includes(`chrome-extension://${id}/`) && fs.existsSync(manifest.path);
     if (app?.isPackaged) {
-      if (process.platform === 'win32') {
-        const launcher = path.join(directory, 'native-host.cmd');
-        registered = registered && manifest.path === launcher && fs.readFileSync(launcher, 'utf8').includes(`\"${process.execPath}\"`);
-      } else registered = registered && manifest.path === process.execPath;
+      const launcher = path.join(directory, process.platform === 'win32' ? 'native-host.cmd' : 'native-host');
+      registered = registered && manifest.path === launcher && fs.readFileSync(launcher, 'utf8').includes(process.platform === 'win32' ? `\"${process.execPath}\"` : `'${process.execPath}'`);
     }
     if (registered && process.platform === 'win32') registered = execFileSync('reg', ['query', `HKCU\\Software\\Google\\Chrome\\NativeMessagingHosts\\${name}`, '/ve'], { encoding: 'utf8', windowsHide: true }).includes(manifestPath());
     return { registered: !!registered, extensionId: id, extensionDirectory: extensionDirectory(app) };
